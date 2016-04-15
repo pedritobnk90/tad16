@@ -1557,6 +1557,11 @@ div.v-layout.v-horizontal.v-widget {
 	vertical-align: top;
 }
 
+.v-app {
+	background-image: url(images/fondoVerde.jpg);
+	background-size: 100% 100%;
+}
+
 .mytheme.v-app, .mytheme.v-app-loading {
 	font: 300 16px/1.55 "Open Sans", sans-serif;
 	color: #464646;

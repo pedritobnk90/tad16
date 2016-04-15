@@ -34,5 +34,10 @@
 @mixin mytheme {
   @include valo;
 
-  // Insert your own theme rules here
+
+}
+
+.v-app {
+    background-image: url(images/fondoVerde.jpg);
+    background-size: 100% 100%; 
 }
