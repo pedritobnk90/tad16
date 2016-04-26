@@ -1562,6 +1562,39 @@ div.v-layout.v-horizontal.v-widget {
 	background-size: 100% 100%;
 }
 
+.botonesPrincipal {
+	background-color: #197de1;
+}
+
+.v-button {
+	color: white !important;
+	width: 160px !important;
+	height: 50px !important;
+	background-color: #2B3788 !important;
+	background-image: none !important;
+	border: 1px solid #000 !important;
+}
+
+.v-label-bienvenPrinc {
+	color: #2B3788 !important;
+	width: 150px !important;
+	left: 30% !important;
+	position: absolute !important;
+	font-size: 60px !important;
+}
+
+.v-label-loginLab {
+	color: #2B3788 !important;
+	width: 150px !important;
+	left: 30% !important;
+	position: absolute !important;
+	font-size: 28px !important;
+}
+
+.v-caption-caption1 {
+	color: #FFFB00;
+}
+
 .mytheme.v-app, .mytheme.v-app-loading {
 	font: 300 16px/1.55 "Open Sans", sans-serif;
 	color: #464646;

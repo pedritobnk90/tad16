@@ -7,11 +7,10 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.server.WrappedSession;
-import com.vaadin.shared.ui.combobox.FilteringMode;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
-import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
@@ -20,14 +19,10 @@ import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.declarative.Design;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
-import tad.proyecto.entidades.Equipo;
 import tad.proyecto.entidades.Usuario;
 
 /**
@@ -39,7 +34,7 @@ import tad.proyecto.entidades.Usuario;
  */
 @Theme("mytheme")
 @Widgetset("tad.proyecto.madrigalgutierrezpedroantonio.MyAppWidgetset")
-public class Registro extends UI {
+public class Login extends UI {
     
     private VerticalLayout content;
     private GridLayout row1;
@@ -49,37 +44,18 @@ public class Registro extends UI {
     private Button cancelar;
     private TextField username;
     private PasswordField pass;
-    private TextField nombre;
-    private TextField apellidos;
-    private ComboBox equiposDisponibles;
     private Usuario usuario;
-    private List<Equipo> equipos;
     
-    public Registro(){
-        equipos = new ArrayList<Equipo>();
-        try{
-            final Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
-            final Statement s = conexion.createStatement(); 
-            final ResultSet rs = s.executeQuery ("SELECT * FROM Equipo");
-            while(rs.next()){
-                equipos.add(new Equipo(rs.getInt("id"), rs.getString("nombre")));
-            }
-        }catch(final Exception e){
-            e.printStackTrace();
-        }
+    public Login(){
+        
     }
     
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        getEquipos();
         iniciarComponentes();
         setContent(content);
         configurarComportamientos();
         getPage().setTitle("Gestión de ligas");
-    }
-    
-    private void getEquipos() {
-        
     }
 
     private void iniciarComponentes() {
@@ -90,36 +66,26 @@ public class Registro extends UI {
         content.setSpacing(true);
         content.setMargin(true);
         
-        row1 = new GridLayout(8, 5);
+        row1 = new GridLayout(8, 3);
         row1.setSpacing(true);
         row1.setWidth("100%");
         row1.setHeight("100%");
         loginLab = new Label("Introduzca sus datos:", ContentMode.PREFORMATTED);
         loginLab.setStyleName("loginLab", true);
         row1.addComponent(loginLab, 4, 0);
-        username = new TextField("Nombre de usuario");
+        username = new TextField("Introduzca su nombre de usuario");
         username.setStyleName("caption1");
         row1.addComponent(username, 5, 1);
-        pass = new PasswordField("Contraseña");
+        pass = new PasswordField("Introduzca su contraseña");
         pass.setStyleName("caption1");
-        row1.addComponent(pass, 6, 1);
+        row1.addComponent(pass, 5, 2);
         row1.setColumnExpandRatio(0, 1);
         row1.setColumnExpandRatio(1, 1);
         row1.setColumnExpandRatio(2, 1);
         row1.setColumnExpandRatio(3, 1);
         row1.setColumnExpandRatio(4, 1);
+        row1.setColumnExpandRatio(6, 1);
         row1.setColumnExpandRatio(7, 1);
-        nombre = new TextField("Nombre");
-        nombre.setStyleName("caption1");
-        row1.addComponent(nombre, 5, 2);
-        apellidos = new TextField("Apellidos");
-        apellidos.setStyleName("caption1");
-        row1.addComponent(apellidos, 6, 2);
-        equiposDisponibles = new ComboBox("Equipo favorito");
-        equiposDisponibles.setFilteringMode(FilteringMode.CONTAINS);
-        equiposDisponibles.addItems(equipos);
-        equiposDisponibles.setStyleName("caption1");
-        row1.addComponent(equiposDisponibles, 5, 3);
         
         row2 = new GridLayout(7, 1);
         row2.setSizeFull();
@@ -151,7 +117,7 @@ public class Registro extends UI {
                     Notification.show("Debe introducir su contraseña", Notification.Type.ERROR_MESSAGE);
                 }else{
                     try{
-                        Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/tad16", "root", "");
+                        Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
                         Statement s = conexion.createStatement(); 
                         ResultSet rs = s.executeQuery ("SELECT * FROM Usuario WHERE username='" + username.getValue() + "'");
                         if(rs.next()){
@@ -181,8 +147,8 @@ public class Registro extends UI {
         });
     }
 
-    @WebServlet(urlPatterns = "/Registro/*", name = "RegistroServlet", asyncSupported = true)
-    @VaadinServletConfiguration(ui = Registro.class, productionMode = false)
-    public static class RegistroServlet extends VaadinServlet {
+    @WebServlet(urlPatterns = "/Login/*", name = "LoginServlet", asyncSupported = true)
+    @VaadinServletConfiguration(ui = Login.class, productionMode = false)
+    public static class LoginServlet extends VaadinServlet {
     }
 }
