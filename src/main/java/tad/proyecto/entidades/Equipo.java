@@ -16,6 +16,7 @@ public class Equipo implements Serializable {
     private static final long serialVersionUID = 1L;
     private Integer id;
     private String nombre;
+    private Integer liga;
 
     public Equipo() {
     }
@@ -24,9 +25,10 @@ public class Equipo implements Serializable {
         this.id = id;
     }
 
-    public Equipo(Integer id, String nombre) {
+    public Equipo(Integer id, String nombre, Integer liga) {
         this.id = id;
         this.nombre = nombre;
+        this.liga = liga;
     }
 
     public Integer getId() {
@@ -43,6 +45,14 @@ public class Equipo implements Serializable {
 
     public void setNombre(String nombre) {
         this.nombre = nombre;
+    }
+    
+    public Integer getLiga() {
+        return liga;
+    }
+
+    public void setLiga(Integer liga) {
+        this.liga = liga;
     }
 
 }

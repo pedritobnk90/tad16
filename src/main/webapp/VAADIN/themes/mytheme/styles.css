@@ -1595,6 +1595,20 @@ div.v-layout.v-horizontal.v-widget {
 	color: #FFFB00;
 }
 
+.v-panel {
+	background-image: url(images/fondoVerde.jpg);
+	background-size: 100% 100%;
+}
+
+.v-panel-content {
+	background-image: url(images/fondoVerde.jpg);
+	background-size: 100% 100%;
+}
+
+.v-table-caption-caption1 {
+	color: #FFFB00;
+}
+
 .mytheme.v-app, .mytheme.v-app-loading {
 	font: 300 16px/1.55 "Open Sans", sans-serif;
 	color: #464646;

@@ -53,19 +53,32 @@
                     <version>3.0.1</version>
                     <scope>provided</scope>
 		</dependency>
-		<dependency>
-                    <groupId>com.vaadin</groupId>
-                    <artifactId>vaadin-server</artifactId>
-		</dependency>
+		
 		<dependency>
                     <groupId>com.vaadin</groupId>
                     <artifactId>vaadin-push</artifactId>
+                    <version>${vaadin.version}</version>
 		</dependency>
 		<dependency>
                     <groupId>com.vaadin</groupId>
                     <artifactId>vaadin-client</artifactId>
-                    <scope>provided</scope>
+                    <version>${vaadin.version}</version>
 		</dependency>
+                <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-server</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiled</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.vaadin</groupId>
+            <artifactId>vaadin-client-compiler</artifactId>
+            <version>${vaadin.version}</version>
+        </dependency>
 		<!--
 		  Needed when using the widgetset optimizer (custom ConnectorBundleLoaderFactory).
 		  
@@ -73,16 +86,11 @@
           compilation classpath by vaadin-maven-plugin so normally there is no need for an
           explicit dependency.
         -->
-        <!--
-        <dependency>
-                <groupId>com.vaadin</groupId>
-                <artifactId>vaadin-client-compiler</artifactId>
-                <scope>provided</scope>
-        </dependency>
-        -->
+        
         <dependency>
             <groupId>com.vaadin</groupId>
             <artifactId>vaadin-themes</artifactId>
+            <version>${vaadin.version}</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -136,6 +144,7 @@
                     <compileReport>false</compileReport>
                     <style>OBF</style>
                     <strict>true</strict>
+                    <runTarget>http://localhost:8080/</runTarget>
                 </configuration>
                 <executions>
                     <execution>
@@ -145,6 +154,7 @@
                             <goal>compile</goal>
                             <!-- Comment out compile-theme goal to use on-the-fly theme compilation -->
                             <goal>compile-theme</goal>
+                            <goal>debug</goal>
                         </goals>
                     </execution>
                 </executions>

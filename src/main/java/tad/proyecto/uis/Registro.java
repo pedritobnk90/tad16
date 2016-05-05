@@ -1,4 +1,4 @@
-package tad.proyecto.madrigalgutierrezpedroantonio;
+package tad.proyecto.uis;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -13,14 +13,12 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.declarative.Design;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -71,11 +69,17 @@ public class Registro extends UI {
     
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        getEquipos();
-        iniciarComponentes();
-        setContent(content);
-        configurarComportamientos();
-        getPage().setTitle("Gestión de ligas");
+        WrappedSession session = getSession().getSession();
+        usuario = (Usuario) session.getAttribute("usuario");
+        if(usuario != null){
+            getPage().setLocation("/Inicio");
+        }else{
+            getEquipos();
+            iniciarComponentes();
+            setContent(content);
+            configurarComportamientos();
+            getPage().setTitle("Gestión de ligas");
+        }
     }
     
     private void getEquipos() {
@@ -117,7 +121,10 @@ public class Registro extends UI {
         row1.addComponent(apellidos, 6, 2);
         equiposDisponibles = new ComboBox("Equipo favorito");
         equiposDisponibles.setFilteringMode(FilteringMode.CONTAINS);
-        equiposDisponibles.addItems(equipos);
+        for(final Equipo equipo: equipos){
+            equiposDisponibles.addItem(equipo.getNombre());
+        }
+        
         equiposDisponibles.setStyleName("caption1");
         row1.addComponent(equiposDisponibles, 5, 3);
         
@@ -146,25 +153,37 @@ public class Registro extends UI {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if(username.getValue().trim().equals("")){
-                    Notification.show("Debe introducir su nombre de usuario", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Debe introducir un nombre de usuario", Notification.Type.WARNING_MESSAGE);
                 }else if(pass.getValue().trim().equals("")){
-                    Notification.show("Debe introducir su contraseña", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Debe introducir una contraseña", Notification.Type.WARNING_MESSAGE);
+                }else if(nombre.getValue().trim().equals("")){
+                    Notification.show("Debe introducir su nombre", Notification.Type.WARNING_MESSAGE);
+                }else if(apellidos.getValue().trim().equals("")){
+                    Notification.show("Debe introducir sus apellidos", Notification.Type.WARNING_MESSAGE);
+                }else if(equiposDisponibles.getValue().equals("") || equiposDisponibles.getValue() == null){
+                    Notification.show("Debe seleccionar su equipo favorito", Notification.Type.WARNING_MESSAGE);
                 }else{
-                    try{
-                        Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/tad16", "root", "");
-                        Statement s = conexion.createStatement(); 
-                        ResultSet rs = s.executeQuery ("SELECT * FROM Usuario WHERE username='" + username.getValue() + "'");
-                        if(rs.next()){
-                            usuario = new Usuario(rs.getInt("id"), rs.getString("username"), rs.getString("pass"), 
-                                    rs.getString("nombre"), rs.getString("apellidos"), rs.getInt("equipoFavorito"));
-                            conexion.close();
-                            if(usuario.getPass().equals(pass.getValue())){
-                                WrappedSession session = getSession().getSession(); 
-                                session.setAttribute("usuario", usuario);
-                                getPage().setLocation("/Inicio");
+                    try{ 
+                        Integer idEquipoFavorito = null;
+                        for(final Equipo equipo : equipos){
+                            if(equipo.getNombre().equals(equiposDisponibles.getValue())){
+                                idEquipoFavorito = equipo.getId();
                             }
-                        }else{
-                            Notification.show("Nombre de usuario o contraseña no válidos", Notification.Type.ERROR_MESSAGE);
+                        }
+                        final Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost/tad16", "root", "");
+                        final Statement s = conexion.createStatement(); 
+                        s.executeUpdate("INSERT INTO Usuario (username, pass, nombre, apellidos, equipoFavorito) "
+                            + "VALUES ('" + username.getValue() + "','" + pass.getValue() + "','" + nombre.getValue() 
+                            + "','" + apellidos.getValue() + "'," + idEquipoFavorito + ")");
+                        final ResultSet rs2 = s.executeQuery ("SELECT * FROM Usuario WHERE username='" + username.getValue() + "'");
+                        if(rs2.next()){
+                            usuario = new Usuario(rs2.getInt("id"), rs2.getString("username"), rs2.getString("pass"), 
+                                rs2.getString("nombre"), rs2.getString("apellidos"), rs2.getInt("equipoFavorito"));
+                            conexion.close();
+                            WrappedSession session = getSession().getSession(); 
+                            session.setAttribute("usuario", usuario);
+                            session.setMaxInactiveInterval(600);
+                            getPage().setLocation("/Inicio");
                         }
                     }catch(final Exception e){
                         e.printStackTrace();

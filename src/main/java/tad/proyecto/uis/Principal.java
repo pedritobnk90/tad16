@@ -1,10 +1,11 @@
-package tad.proyecto.madrigalgutierrezpedroantonio;
+package tad.proyecto.uis;
 
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
+import com.vaadin.server.WrappedSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
@@ -12,6 +13,7 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 import javax.servlet.annotation.WebServlet;
+import tad.proyecto.entidades.Usuario;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -37,9 +39,15 @@ public class Principal extends UI{
     
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        getPage().setTitle("GestiLigas App");
-        iniciarComponentes();
-        configurarComportamientos(); 
+        WrappedSession session = getSession().getSession();
+        Usuario usuario = (Usuario) session.getAttribute("usuario");
+        if(usuario != null){
+            getPage().setLocation("/Inicio");
+        }else{
+            getPage().setTitle("GestiLigas App");
+            iniciarComponentes();
+            configurarComportamientos(); 
+        }
     }
 
     private void iniciarComponentes() {

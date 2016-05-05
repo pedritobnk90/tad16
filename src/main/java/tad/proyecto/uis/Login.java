@@ -1,4 +1,4 @@
-package tad.proyecto.madrigalgutierrezpedroantonio;
+package tad.proyecto.uis;
 
 import javax.servlet.annotation.WebServlet;
 
@@ -7,12 +7,10 @@ import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.annotations.Widgetset;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.server.VaadinSession;
 import com.vaadin.server.WrappedSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
@@ -52,10 +50,16 @@ public class Login extends UI {
     
     @Override
     protected void init(VaadinRequest vaadinRequest) {
-        iniciarComponentes();
-        setContent(content);
-        configurarComportamientos();
-        getPage().setTitle("Gestión de ligas");
+        WrappedSession session = getSession().getSession();
+        usuario = (Usuario) session.getAttribute("usuario");
+        if(usuario != null){
+            getPage().setLocation("/Inicio");
+        }else{
+            iniciarComponentes();
+            setContent(content);
+            configurarComportamientos();
+            getPage().setTitle("Gestión de ligas");
+        }
     }
 
     private void iniciarComponentes() {
@@ -112,9 +116,9 @@ public class Login extends UI {
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 if(username.getValue().trim().equals("")){
-                    Notification.show("Debe introducir su nombre de usuario", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Debe introducir su nombre de usuario", Notification.Type.WARNING_MESSAGE);
                 }else if(pass.getValue().trim().equals("")){
-                    Notification.show("Debe introducir su contraseña", Notification.Type.ERROR_MESSAGE);
+                    Notification.show("Debe introducir su contraseña", Notification.Type.WARNING_MESSAGE);
                 }else{
                     try{
                         Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
@@ -127,10 +131,11 @@ public class Login extends UI {
                             if(usuario.getPass().equals(pass.getValue())){
                                 WrappedSession session = getSession().getSession(); 
                                 session.setAttribute("usuario", usuario);
+                                session.setMaxInactiveInterval(600);
                                 getPage().setLocation("/Inicio");
+                            }else{
+                                Notification.show("Nombre de usuario o contraseña no válidos", Notification.Type.WARNING_MESSAGE);
                             }
-                        }else{
-                            Notification.show("Nombre de usuario o contraseña no válidos", Notification.Type.ERROR_MESSAGE);
                         }
                     }catch(final Exception e){
                         e.printStackTrace();
