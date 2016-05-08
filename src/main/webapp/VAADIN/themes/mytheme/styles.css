@@ -1609,6 +1609,14 @@ div.v-layout.v-horizontal.v-widget {
 	color: #FFFB00;
 }
 
+.v-textfield-caption-caption1 {
+	color: #FFFB00;
+}
+
+.v-filterselect-caption1 {
+	color: #FFFB00;
+}
+
 .mytheme.v-app, .mytheme.v-app-loading {
 	font: 300 16px/1.55 "Open Sans", sans-serif;
 	color: #464646;

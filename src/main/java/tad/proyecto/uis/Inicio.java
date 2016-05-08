@@ -45,7 +45,6 @@ public class Inicio extends UI{
     private Usuario usuario;
     private Table clasificacionTabla;
     private Button goAnadirJornada;
-    private Button goActualizarJornada;
     private Button goBorrarJornada;
     private Button goBuscarJornada;
     private List<Equipo> equipos;
@@ -120,11 +119,9 @@ public class Inicio extends UI{
         row2.addComponent(clasificacionTabla, 4, 0);
         
         goAnadirJornada = new Button("Añadir jornada");
-        goActualizarJornada = new Button("Actualizar jornada");
         goBuscarJornada = new Button("Buscar jornada");
         goBorrarJornada = new Button("Borrar jornada");
         row21.addComponent(goAnadirJornada, 0, 2);
-        row21.addComponent(goActualizarJornada, 0, 3);
         row21.addComponent(goBuscarJornada, 1, 2);
         row21.addComponent(goBorrarJornada, 1, 3);
         
@@ -145,12 +142,6 @@ public class Inicio extends UI{
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getPage().setLocation("/AnadirJornada");
-            }
-        });
-        goActualizarJornada.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                getPage().setLocation("/ActualizarJornada");
             }
         });
         goBuscarJornada.addClickListener(new Button.ClickListener() {

@@ -15,10 +15,15 @@ public class Jornada implements Serializable {
 
     private static final long serialVersionUID = 1L;
     private Integer id;
+    private int idJornada;
     private int idEquipoLocal;
     private int idEquipoVisitante;
     private int golesEquipoLocal;
     private int golesEquipoVisitante;
+    
+    //Variables útiles para join en la bbdd. Estas variables no se encuentran en la tabla Jornada
+    private String nombreEquipoLocal;
+    private String nombreEquipoVisitante;
 
     public Jornada() {
     }
@@ -27,12 +32,28 @@ public class Jornada implements Serializable {
         this.id = id;
     }
 
-    public Jornada(Integer id, int idEquipoLocal, int idEquipoVisitante, int golesEquipoLocal, int golesEquipoVisitante) {
+    public Jornada(Integer id, int idJornada, int idEquipoLocal, int idEquipoVisitante, 
+            int golesEquipoLocal, int golesEquipoVisitante) {
         this.id = id;
+        this.idJornada = idJornada;
         this.idEquipoLocal = idEquipoLocal;
         this.idEquipoVisitante = idEquipoVisitante;
         this.golesEquipoLocal = golesEquipoLocal;
         this.golesEquipoVisitante = golesEquipoVisitante;
+    }
+    
+    //Sobrecargo el constructor para las variables auxiliares de los nombres de los equipos
+    public Jornada(Integer id, int idJornada, int idEquipoLocal, int idEquipoVisitante, 
+            int golesEquipoLocal, int golesEquipoVisitante, String nombreEquipoLocal, 
+            String nombreEquipoVisitante) {
+        this.id = id;
+        this.idJornada = idJornada;
+        this.idEquipoLocal = idEquipoLocal;
+        this.idEquipoVisitante = idEquipoVisitante;
+        this.golesEquipoLocal = golesEquipoLocal;
+        this.golesEquipoVisitante = golesEquipoVisitante;
+        this.nombreEquipoLocal = nombreEquipoLocal;
+        this.nombreEquipoVisitante = nombreEquipoVisitante;
     }
 
     public Integer getId() {
@@ -73,6 +94,30 @@ public class Jornada implements Serializable {
 
     public void setGolesEquipoVisitante(int golesEquipoVisitante) {
         this.golesEquipoVisitante = golesEquipoVisitante;
+    }
+    
+    public int getIdJornada() {
+        return idJornada;
+    }
+
+    public void setIdJornada(int idJornada) {
+        this.idJornada = idJornada;
+    }
+    
+     public String getNombreEquipoLocal() {
+        return nombreEquipoLocal;
+    }
+
+    public void setNombreEquipoLocal(String nombreEquipoLocal) {
+        this.nombreEquipoLocal = nombreEquipoLocal;
+    }
+
+    public String getNombreEquipoVisitante() {
+        return nombreEquipoVisitante;
+    }
+
+    public void setNombreEquipoVisitante(String nombreEquipoVisitante) {
+        this.nombreEquipoVisitante = nombreEquipoVisitante;
     }
 
 }

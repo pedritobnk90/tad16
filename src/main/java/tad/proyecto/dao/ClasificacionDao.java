@@ -6,18 +6,17 @@
 package tad.proyecto.dao;
 
 import java.util.List;
-import tad.proyecto.entidades.Equipo;
+import tad.proyecto.entidades.Clasificacion;
+import tad.proyecto.entidades.Jornada;
 
 /**
  *
  * @author PedroMadrigal
  */
-public interface EquiposDao {
+public interface ClasificacionDao {
     
-    public List<Equipo> getEquipos() throws Exception;
+    public void calculaClasificacion (final List<Jornada> jornada) throws Exception;
     
-    public Equipo getEquipo(final int id) throws Exception;
-        
-    public Equipo getEquipo(final String nombre) throws Exception;
+    public List<Clasificacion> getClasificacionActual() throws Exception;
     
 }

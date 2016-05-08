@@ -18,7 +18,7 @@ public class Clasificacion implements Serializable {
     private int idLiga;
     private int idEquipo;
     private int posicion;
-    private int puntos;
+    private int puntos; 
     private int golesFavor;
     private int golesContra;
     private int difGoles;
@@ -103,6 +103,16 @@ public class Clasificacion implements Serializable {
 
     public void setDifGoles(int difGoles) {
         this.difGoles = difGoles;
+    }
+    
+    public int compareTo(final Clasificacion clasificacion) {
+        if (puntos < clasificacion.puntos) {
+            return -1;
+        }
+        if (puntos > clasificacion.puntos) {
+            return 1;
+        }
+        return 0;
     }
 
 }

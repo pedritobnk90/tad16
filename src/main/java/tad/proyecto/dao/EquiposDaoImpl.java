@@ -19,9 +19,9 @@ import tad.proyecto.entidades.Equipo;
  */
 public class EquiposDaoImpl implements EquiposDao {
     
-    public List<Equipo> getEquipos(){
+    public List<Equipo> getEquipos() throws Exception{
         
-    List<Equipo> equipos = new ArrayList<Equipo>();    
+        List<Equipo> equipos = new ArrayList<Equipo>();    
         try{
             Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
             Statement s = conexion.createStatement(); 
@@ -36,5 +36,42 @@ public class EquiposDaoImpl implements EquiposDao {
         return equipos;
     }
     
+    public Equipo getEquipo(final int id) throws Exception {
+        
+        Equipo equipo = new Equipo();    
+        try{
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet rs = s.executeQuery ("SELECT * FROM Equipo WHERE id = " + id);
+            while(rs.next()){
+                equipo.setId(rs.getInt(1));
+                equipo.setNombre(rs.getString(2));
+                equipo.setLiga(rs.getInt(3));
+            }
+        
+        } catch (final Exception e){
+            e.printStackTrace();
+        }
+        return equipo;
+    }
+    
+    public Equipo getEquipo(final String nombre) throws Exception {
+        
+        Equipo equipo = new Equipo();    
+        try{
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet rs = s.executeQuery ("SELECT * FROM Equipo WHERE nombre = '" + nombre + "'");
+            while(rs.next()){
+                equipo.setId(rs.getInt(1));
+                equipo.setNombre(rs.getString(2));
+                equipo.setLiga(rs.getInt(3));
+            }
+        
+        } catch (final Exception e){
+            e.printStackTrace();
+        }
+        return equipo;
+    }
     
 }

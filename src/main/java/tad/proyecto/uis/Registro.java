@@ -60,7 +60,7 @@ public class Registro extends UI {
             final Statement s = conexion.createStatement(); 
             final ResultSet rs = s.executeQuery ("SELECT * FROM Equipo");
             while(rs.next()){
-                equipos.add(new Equipo(rs.getInt("id"), rs.getString("nombre")));
+                equipos.add(new Equipo(rs.getInt("id"), rs.getString("nombre"), rs.getInt("liga")));
             }
         }catch(final Exception e){
             e.printStackTrace();

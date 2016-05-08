@@ -126,7 +126,7 @@ public class Login extends UI {
                         ResultSet rs = s.executeQuery ("SELECT * FROM Usuario WHERE username='" + username.getValue() + "'");
                         if(rs.next()){
                             usuario = new Usuario(rs.getInt("id"), rs.getString("username"), rs.getString("pass"), 
-                                    rs.getString("nombre"), rs.getString("apellidos"), rs.getInt("equipoFavorito"));
+                                rs.getString("nombre"), rs.getString("apellidos"), rs.getInt("equipoFavorito"));
                             conexion.close();
                             if(usuario.getPass().equals(pass.getValue())){
                                 WrappedSession session = getSession().getSession(); 
