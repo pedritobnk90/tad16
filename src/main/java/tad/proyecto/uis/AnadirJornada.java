@@ -19,11 +19,8 @@ import java.util.List;
 import javax.servlet.annotation.WebServlet;
 import tad.proyecto.dao.ClasificacionDao;
 import tad.proyecto.dao.ClasificacionDaoImpl;
-import tad.proyecto.dao.EquiposDao;
-import tad.proyecto.dao.EquiposDaoImpl;
 import tad.proyecto.dao.JornadasDao;
 import tad.proyecto.dao.JornadasDaoImpl;
-import tad.proyecto.entidades.Equipo;
 import tad.proyecto.entidades.Jornada;
 import tad.proyecto.entidades.Usuario;
 

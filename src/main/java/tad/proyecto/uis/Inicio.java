@@ -20,9 +20,7 @@ import java.sql.ResultSet;
 import java.sql.Statement;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 import javax.servlet.annotation.WebServlet;
-import tad.proyecto.entidades.Equipo;
 import tad.proyecto.entidades.Usuario;
 
 /**
@@ -45,9 +43,7 @@ public class Inicio extends UI{
     private Usuario usuario;
     private Table clasificacionTabla;
     private Button goAnadirJornada;
-    private Button goBorrarJornada;
     private Button goBuscarJornada;
-    private List<Equipo> equipos;
     
     public Inicio(){
         
@@ -119,11 +115,9 @@ public class Inicio extends UI{
         row2.addComponent(clasificacionTabla, 4, 0);
         
         goAnadirJornada = new Button("Añadir jornada");
-        goBuscarJornada = new Button("Buscar jornada");
-        goBorrarJornada = new Button("Borrar jornada");
+        goBuscarJornada = new Button("Buscar --> Actualizar/Borrar jornada");
         row21.addComponent(goAnadirJornada, 0, 2);
         row21.addComponent(goBuscarJornada, 1, 2);
-        row21.addComponent(goBorrarJornada, 1, 3);
         
         row2.setColumnExpandRatio(0, 1);
         row2.setColumnExpandRatio(1, 1);
@@ -148,12 +142,6 @@ public class Inicio extends UI{
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getPage().setLocation("/BuscarJornada");
-            }
-        });
-        goBorrarJornada.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                getPage().setLocation("/BorrarJornada");
             }
         });
     }
