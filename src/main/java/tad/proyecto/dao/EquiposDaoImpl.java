@@ -14,11 +14,18 @@ import java.util.List;
 import tad.proyecto.entidades.Equipo;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public class EquiposDaoImpl implements EquiposDao {
     
+    /**
+     * Este método se utiliza para obtener todos los equipos
+     * @return List<Equipo> Devuelve la lista de todos los equipos.
+     * @exception Exception
+     * @see Exception
+     */
     public List<Equipo> getEquipos() throws Exception{
         
         List<Equipo> equipos = new ArrayList<Equipo>();    
@@ -36,6 +43,13 @@ public class EquiposDaoImpl implements EquiposDao {
         return equipos;
     }
     
+    /**
+     * Este método se utiliza para obtener un equipo concreto.
+     * @param id Primer parámetro, el id del equipo a buscar.
+     * @return Equipo Devuelve un equipo concreto.
+     * @exception Exception
+     * @see Exception
+     */
     public Equipo getEquipo(final int id) throws Exception {
         
         Equipo equipo = new Equipo();    
@@ -55,6 +69,13 @@ public class EquiposDaoImpl implements EquiposDao {
         return equipo;
     }
     
+    /**
+     * Este método se utiliza para obtener un equipo concreto.
+     * @param nombre Primer parámetro, el nombre del equipo a buscar.
+     * @return Equipo Devuelve un equipo concreto.
+     * @exception Exception
+     * @see Exception
+     */
     public Equipo getEquipo(final String nombre) throws Exception {
         
         Equipo equipo = new Equipo();    

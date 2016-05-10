@@ -8,8 +8,9 @@ package tad.proyecto.entidades;
 import java.io.Serializable;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public class Jornada implements Serializable {
 
@@ -20,7 +21,7 @@ public class Jornada implements Serializable {
     private int idEquipoVisitante;
     private int golesEquipoLocal;
     private int golesEquipoVisitante;
-    
+
     //Variables útiles para join en la bbdd. Estas variables no se encuentran en la tabla Jornada
     private String nombreEquipoLocal;
     private String nombreEquipoVisitante;
@@ -32,7 +33,7 @@ public class Jornada implements Serializable {
         this.id = id;
     }
 
-    public Jornada(Integer id, int idJornada, int idEquipoLocal, int idEquipoVisitante, 
+    public Jornada(Integer id, int idJornada, int idEquipoLocal, int idEquipoVisitante,
             int golesEquipoLocal, int golesEquipoVisitante) {
         this.id = id;
         this.idJornada = idJornada;
@@ -41,10 +42,10 @@ public class Jornada implements Serializable {
         this.golesEquipoLocal = golesEquipoLocal;
         this.golesEquipoVisitante = golesEquipoVisitante;
     }
-    
+
     //Sobrecargo el constructor para las variables auxiliares de los nombres de los equipos
-    public Jornada(Integer id, int idJornada, int idEquipoLocal, int idEquipoVisitante, 
-            int golesEquipoLocal, int golesEquipoVisitante, String nombreEquipoLocal, 
+    public Jornada(Integer id, int idJornada, int idEquipoLocal, int idEquipoVisitante,
+            int golesEquipoLocal, int golesEquipoVisitante, String nombreEquipoLocal,
             String nombreEquipoVisitante) {
         this.id = id;
         this.idJornada = idJornada;
@@ -95,7 +96,7 @@ public class Jornada implements Serializable {
     public void setGolesEquipoVisitante(int golesEquipoVisitante) {
         this.golesEquipoVisitante = golesEquipoVisitante;
     }
-    
+
     public int getIdJornada() {
         return idJornada;
     }
@@ -103,8 +104,8 @@ public class Jornada implements Serializable {
     public void setIdJornada(int idJornada) {
         this.idJornada = idJornada;
     }
-    
-     public String getNombreEquipoLocal() {
+
+    public String getNombreEquipoLocal() {
         return nombreEquipoLocal;
     }
 

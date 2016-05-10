@@ -24,11 +24,9 @@ import javax.servlet.annotation.WebServlet;
 import tad.proyecto.entidades.Usuario;
 
 /**
- * This UI is the application entry point. A UI may either represent a browser window 
- * (or tab) or some part of a html page where a Vaadin application is embedded.
- * <p>
- * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
- * overridden to add component to the user interface and initialize non-component functionality.
+ * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 @Theme("mytheme")
 @Widgetset("tad.proyecto.madrigalgutierrezpedroantonio.MyAppWidgetset")
@@ -49,6 +47,11 @@ public class Inicio extends UI{
         
     }
     
+    /**
+     * Este método inicializa el ui. Siempre es ejecutado al abrir un Ui.
+     * @param vaadinRequest Único parámetro del método.
+     * @see Exception
+     */
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         getPage().setTitle("GestiLigas App");
@@ -62,6 +65,12 @@ public class Inicio extends UI{
         }
     }
 
+    /**
+     * Este método se utiliza para inicializar todos los componentes de Vaadin.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     private void iniciarComponentes() {
         content = new VerticalLayout();
         panel = new Panel(content);
@@ -132,6 +141,12 @@ public class Inicio extends UI{
         content.setExpandRatio(row2, 1);
     }
 
+    /**
+     * Este método se utiliza para definir los comportamientos para cada componente de Vaadin.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     private void configurarComportamientos() {
         goAnadirJornada.addClickListener(new Button.ClickListener() {
             @Override

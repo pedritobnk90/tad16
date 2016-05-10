@@ -8,8 +8,9 @@ package tad.proyecto.entidades;
 import java.io.Serializable;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public class Equipo implements Serializable {
 
@@ -46,7 +47,7 @@ public class Equipo implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public Integer getLiga() {
         return liga;
     }

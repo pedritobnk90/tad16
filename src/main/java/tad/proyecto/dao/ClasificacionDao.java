@@ -10,8 +10,9 @@ import tad.proyecto.entidades.Clasificacion;
 import tad.proyecto.entidades.Jornada;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public interface ClasificacionDao {
     

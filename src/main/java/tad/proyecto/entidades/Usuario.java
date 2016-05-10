@@ -8,8 +8,9 @@ package tad.proyecto.entidades;
 import java.io.Serializable;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public class Usuario implements Serializable {
 

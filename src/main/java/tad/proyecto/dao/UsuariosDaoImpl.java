@@ -12,11 +12,19 @@ import java.sql.Statement;
 import tad.proyecto.entidades.Usuario;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public class UsuariosDaoImpl {
     
+    /**
+     * Este método se utiliza cuando se quiere obtener un usuario a través de su username.
+     * @param username Único parámetro del método, username del usuario.
+     * @return Usuario Devuelve todos los datos del usuario.
+     * @exception Exception
+     * @see Exception
+     */
     public Usuario getUsuario(final String username) throws Exception {
         
         Usuario usuario = new Usuario();    
@@ -39,6 +47,13 @@ public class UsuariosDaoImpl {
         return usuario;
     }
     
+    /**
+     * Este método se utiliza cuando se quiere añadir un nuevo usuario.
+     * @param usuario Único parámetro del método, objeto usuario con todos sus datos.
+     * @return No devuelve nada.
+     * @exception Exception
+     * @see Exception
+     */
     public void addUsuario(final Usuario usuario) throws Exception {
            
         try {

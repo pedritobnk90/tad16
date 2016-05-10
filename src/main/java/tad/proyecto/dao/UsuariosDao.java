@@ -8,8 +8,9 @@ package tad.proyecto.dao;
 import tad.proyecto.entidades.Usuario;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public interface UsuariosDao {
     

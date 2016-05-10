@@ -8,7 +8,6 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.WrappedSession;
 import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
@@ -30,14 +29,11 @@ import tad.proyecto.dao.JornadasDaoImpl;
 import tad.proyecto.entidades.Jornada;
 import tad.proyecto.entidades.Usuario;
 import org.vaadin.dialogs.ConfirmDialog;
-import org.vaadin.dialogs.DefaultConfirmDialogFactory;
 
 /**
- * This UI is the application entry point. A UI may either represent a browser window 
- * (or tab) or some part of a html page where a Vaadin application is embedded.
- * <p>
- * The UI is initialized using {@link #init(VaadinRequest)}. This method is intended to be 
- * overridden to add component to the user interface and initialize non-component functionality.
+ * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 @Theme("mytheme")
 @Widgetset("tad.proyecto.madrigalgutierrezpedroantonio.MyAppWidgetset")
@@ -86,6 +82,11 @@ public class BuscarJornada extends UI{
         
     }
     
+    /**
+     * Este método inicializa el ui. Siempre es ejecutado al abrir un Ui.
+     * @param vaadinRequest Único parámetro del método.
+     * @see Exception
+     */
     @Override
     protected void init(VaadinRequest vaadinRequest) {
         getPage().setTitle("GestiLigas App");
@@ -99,6 +100,12 @@ public class BuscarJornada extends UI{
         }
     }
 
+    /**
+     * Este método se utiliza para inicializar todos los componentes de Vaadin.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     private void iniciarComponentes() {
         content = new VerticalLayout();
         content.setSizeFull();
@@ -156,6 +163,12 @@ public class BuscarJornada extends UI{
         content.setExpandRatio(row2, 1);
     }
 
+    /**
+     * Este método se utiliza para definir los comportamientos para cada componente de Vaadin.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     private void configurarComportamientos() {
         goInicio.addClickListener(new Button.ClickListener() {
             @Override
@@ -195,14 +208,17 @@ public class BuscarJornada extends UI{
                             borrarJornada();
                         }
                     });
-                
                 }
             }
-             
         });
-        
     }
     
+    /**
+     * Este método se utiliza para actualizar una jornada seleccionada.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     private void actualizarJornada() {
         
         final List<Jornada> jornadaAntes = new ArrayList<Jornada>();   
@@ -285,12 +301,17 @@ public class BuscarJornada extends UI{
         });
     }
     
+    /**
+     * Este método se utiliza para cancelar la edición de una jornada.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     private void cancelarEdicion() {
         
         if(selectJornada.getValue() == null){
             Notification.show("Debe seleccionar una jornada correctamente", Notification.Type.WARNING_MESSAGE);
         }else{
-        
             try {
                 jornadas = jornadasDao.getJornada((Integer)selectJornada.getValue());
             } catch(final Exception e){
@@ -445,11 +466,15 @@ public class BuscarJornada extends UI{
                     borrarJornada();
                 }
             });
-        
         }
-        
     }
     
+    /**
+     * Este método se utiliza para borrar una jornada seleccionada.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     private void borrarJornada() {
         final List<Jornada> jornadaAntes = new ArrayList<Jornada>();   
         jornadaAntes.addAll(jornadas);
@@ -471,8 +496,7 @@ public class BuscarJornada extends UI{
                         e.printStackTrace();
                     }
                     
-                    cd.close();
-                         
+                    cd.close(); 
                 }
                  
                 if(cd.isCanceled()){
@@ -490,22 +514,4 @@ public class BuscarJornada extends UI{
     @VaadinServletConfiguration(ui = BuscarJornada.class, productionMode = false)
     public static class BuscarJornadaServlet extends VaadinServlet {
     }
-}
-
-@Theme("mytheme")
-@Widgetset("tad.proyecto.madrigalgutierrezpedroantonio.MyAppWidgetset")
-abstract class confirmDialogBorrar extends UI{
-    
-    private GridLayout content;
-    private VerticalLayout row1;
-    private VerticalLayout row2;
-    private HorizontalLayout row21;
-    private Button aceptar;
-    private Button cancelar;
-    
-    @Override
-    protected void init(VaadinRequest vaadinRequest) {
-        
-    }
-    
 }

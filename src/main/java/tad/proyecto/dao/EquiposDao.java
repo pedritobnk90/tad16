@@ -9,8 +9,9 @@ import java.util.List;
 import tad.proyecto.entidades.Equipo;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public interface EquiposDao {
     

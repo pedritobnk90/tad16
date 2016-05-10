@@ -14,11 +14,19 @@ import java.util.List;
 import tad.proyecto.entidades.Jornada;
 
 /**
- *
  * @author PedroMadrigal
+ * @version 1.0
+ * @since 2016
  */
 public class JornadasDaoImpl implements JornadasDao{
     
+    /**
+     * Este método se utiliza para obtener una jornada con todos sus resultados
+     * @param idJornada Único parámetro del método, el número de jornada.
+     * @return List<Jornada> Devuelve la lista de resultados de una jornada.
+     * @exception Exception
+     * @see Exception
+     */
     public List<Jornada> getJornada (final int idJornada) throws Exception {
      
         List<Jornada> jornadas = new ArrayList<Jornada>();
@@ -32,15 +40,19 @@ public class JornadasDaoImpl implements JornadasDao{
             while(rs.next()){
                 jornadas.add(new Jornada(rs.getInt(1), rs.getInt(2), rs.getInt(3), rs.getInt(4),
                     rs.getInt(5), rs.getInt(6), rs.getString(7), rs.getString(8)));
-                
             }
-        
         } catch (final Exception e){
             e.printStackTrace();
         }
         return jornadas;
     }
     
+    /**
+     * Este método se utiliza para obtener las jornadas que ya han sido añadidos sus resultados.
+     * @return List<Integer> Devuelve la lista de enteros de las jornadas no añadidas aún.
+     * @exception Exception
+     * @see Exception
+     */
     public List<Integer> getJornadasTerminadas() throws Exception {
         
         List<Integer> jornadas = new ArrayList<Integer>();
@@ -58,6 +70,12 @@ public class JornadasDaoImpl implements JornadasDao{
         
     }
     
+    /**
+     * Este método se utiliza para obtener las jornadas que ya han sido añadidos sus resultados.
+     * @return List<Jornada> Devuelve la lista de jornadas completas e incompletas.
+     * @exception Exception
+     * @see Exception
+     */
     public List<Jornada> getJornadas() throws Exception {
         
         List<Jornada> jornadas = new ArrayList<Jornada>();    
@@ -75,6 +93,13 @@ public class JornadasDaoImpl implements JornadasDao{
         return jornadas;
     }
     
+    /**
+     * Este método se utiliza para actualizar una jornada (sus resultados)
+     * @param List<Jornada> Primer parámetro, una lista de resultados de una jornada.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     public void updateJornadas(final List<Jornada> jornadas) throws Exception {
         
         try {
@@ -89,9 +114,14 @@ public class JornadasDaoImpl implements JornadasDao{
         } catch (final Exception e){
             e.printStackTrace();
         }
-        
     }
     
+    /**
+     * Este método se utiliza para obtener el número de la siguiente jornada.
+     * @return int Devuelve el número de la siguiente jornada.
+     * @exception Exception
+     * @see Exception
+     */
     public int getSiguienteJornada() throws Exception {
         int idJornada = 0;
         try {
@@ -107,6 +137,13 @@ public class JornadasDaoImpl implements JornadasDao{
         return idJornada;
     }
     
+    /**
+     * Este método se utiliza para borrar una jornada (sus resultados)
+     * @param List<Jornada> Primer parámetro, una lista de resultados de una jornada.
+     * @return No devuelve nada
+     * @exception Exception
+     * @see Exception
+     */
     public void borrarJornadas(final List<Jornada> jornadas) throws Exception {
         
         try {
@@ -121,7 +158,6 @@ public class JornadasDaoImpl implements JornadasDao{
         } catch (final Exception e){
             e.printStackTrace();
         }
-        
     }
     
 }
