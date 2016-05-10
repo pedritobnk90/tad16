@@ -107,4 +107,21 @@ public class JornadasDaoImpl implements JornadasDao{
         return idJornada;
     }
     
+    public void borrarJornadas(final List<Jornada> jornadas) throws Exception {
+        
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            for(final Jornada jornada : jornadas){
+                s.executeUpdate("UPDATE Jornada SET golesEquipoLocal = NULL, "
+                    + "golesEquipoVisitante = NULL WHERE idJornada = " + jornada.getIdJornada() 
+                    + " AND idEquipoLocal = " + jornada.getIdEquipoLocal() 
+                    + " AND idEquipoVisitante = " + jornada.getIdEquipoVisitante());
+            }
+        } catch (final Exception e){
+            e.printStackTrace();
+        }
+        
+    }
+    
 }

@@ -8,15 +8,18 @@ import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
 import com.vaadin.server.WrappedSession;
 import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.ComboBox;
 import com.vaadin.ui.GridLayout;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.themes.Reindeer;
 import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.annotation.WebServlet;
@@ -27,6 +30,7 @@ import tad.proyecto.dao.JornadasDaoImpl;
 import tad.proyecto.entidades.Jornada;
 import tad.proyecto.entidades.Usuario;
 import org.vaadin.dialogs.ConfirmDialog;
+import org.vaadin.dialogs.DefaultConfirmDialogFactory;
 
 /**
  * This UI is the application entry point. A UI may either represent a browser window 
@@ -97,9 +101,11 @@ public class BuscarJornada extends UI{
 
     private void iniciarComponentes() {
         content = new VerticalLayout();
+        content.setSizeFull();
+        content.setWidth("100%");
+        content.setHeight("100%");
         panel = new Panel(content);
         setContent(panel);
-        content.setSizeFull();
         content.setMargin(true);
         content.setSpacing(true);
         content.setImmediate(true);
@@ -114,6 +120,8 @@ public class BuscarJornada extends UI{
         row2 = new GridLayout(6, 15);
         row2.setSpacing(true);
         row2.setMargin(true);
+        row2.setWidth("100%");
+        row2.setHeight("100%");
         
         try {
             jornadasNumeros = jornadasDao.getJornadasTerminadas();
@@ -133,9 +141,12 @@ public class BuscarJornada extends UI{
         row21.addComponent(goInicio, 3, 2);
         row21.addComponent(new Label(), 0, 0);
         row2.addComponent(row21, 2, 0);
+        row2.setRowExpandRatio(0, 1);
         row2.addComponent(new Label(), 0, 1);
         row2.setColumnExpandRatio(0, 1);
         row2.setColumnExpandRatio(1, 1);
+        row2.addComponent(new Label(), 0, 14);
+        row2.setRowExpandRatio(14, 1);
         row21.setColumnExpandRatio(0, 1);
         row21.setColumnExpandRatio(1, 1);
         
@@ -157,30 +168,35 @@ public class BuscarJornada extends UI{
             @Override
             public void valueChange(Property.ValueChangeEvent event) {
                 
-                row22 = new GridLayout(3, 13);
-                row22.setImmediate(true);
-                row22.setSpacing(true);
-                row22.setMargin(true);
-                row2.removeComponent(3, 0);
-                row22.removeAllComponents();
+                if(selectJornada.getValue() == null){
+                    Notification.show("Debe seleccionar una jornada correctamente.", Notification.Type.WARNING_MESSAGE);
+                }else{
                 
-                cancelarEdicion();
-                
-                goActualizar.addClickListener(new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        actualizarJornada();
-                    }
+                    row22 = new GridLayout(3, 13);
+                    row22.setImmediate(true);
+                    row22.setSpacing(true);
+                    row22.setMargin(true);
+                    row2.removeComponent(3, 0);
+                    row22.removeAllComponents();
 
-                });
+                    cancelarEdicion();
+
+                    goActualizar.addClickListener(new Button.ClickListener() {
+                        @Override
+                        public void buttonClick(Button.ClickEvent event) {
+                            actualizarJornada();
+                        }
+
+                    });
+
+                    goBorrar.addClickListener(new Button.ClickListener() {
+                        @Override
+                        public void buttonClick(Button.ClickEvent event) {
+                            borrarJornada();
+                        }
+                    });
                 
-                goBorrar.addClickListener(new Button.ClickListener() {
-                    @Override
-                    public void buttonClick(Button.ClickEvent event) {
-                        borrarJornada();
-                    }
-                });
-                
+                }
             }
              
         });
@@ -271,160 +287,166 @@ public class BuscarJornada extends UI{
     
     private void cancelarEdicion() {
         
-        try {
-            jornadas = jornadasDao.getJornada((Integer)selectJornada.getValue());
-        } catch(final Exception e){
-            e.printStackTrace();
-            Notification.show("Ha ocurrido un problema con la jornada seleccionada.", Notification.Type.ERROR_MESSAGE);
+        if(selectJornada.getValue() == null){
+            Notification.show("Debe seleccionar una jornada correctamente", Notification.Type.WARNING_MESSAGE);
+        }else{
+        
+            try {
+                jornadas = jornadasDao.getJornada((Integer)selectJornada.getValue());
+            } catch(final Exception e){
+                e.printStackTrace();
+                Notification.show("Ha ocurrido un problema con la jornada seleccionada.", Notification.Type.ERROR_MESSAGE);
+            }
+
+            labEquipo1 = new TextField(jornadas.get(0).getNombreEquipoLocal());
+            labEquipo1.setStyleName("caption1", true);
+            labEquipo1.setValue(jornadas.get(0).getGolesEquipoLocal() + "");
+            labEquipo1.setReadOnly(true);
+            labEquipo2 = new TextField(jornadas.get(0).getNombreEquipoVisitante());
+            labEquipo2.setStyleName("caption1", true);
+            labEquipo2.setValue(jornadas.get(0).getGolesEquipoVisitante() + "");
+            labEquipo2.setReadOnly(true);
+            labEquipo3 = new TextField(jornadas.get(1).getNombreEquipoLocal());
+            labEquipo3.setStyleName("caption1", true);
+            labEquipo3.setValue(jornadas.get(1).getGolesEquipoLocal() + "");
+            labEquipo3.setReadOnly(true);
+            labEquipo4 = new TextField(jornadas.get(1).getNombreEquipoVisitante());
+            labEquipo4.setStyleName("caption1", true);
+            labEquipo4.setValue(jornadas.get(1).getGolesEquipoVisitante() + "");
+            labEquipo4.setReadOnly(true);
+            labEquipo5 = new TextField(jornadas.get(2).getNombreEquipoLocal());
+            labEquipo5.setStyleName("caption1", true);
+            labEquipo5.setValue(jornadas.get(2).getGolesEquipoLocal() + "");
+            labEquipo5.setReadOnly(true);
+            labEquipo6 = new TextField(jornadas.get(2).getNombreEquipoVisitante());
+            labEquipo6.setStyleName("caption1", true);
+            labEquipo6.setValue(jornadas.get(2).getGolesEquipoVisitante() + "");
+            labEquipo6.setReadOnly(true);
+            labEquipo7 = new TextField(jornadas.get(3).getNombreEquipoLocal());
+            labEquipo7.setStyleName("caption1", true);
+            labEquipo7.setValue(jornadas.get(3).getGolesEquipoLocal() + "");
+            labEquipo7.setReadOnly(true);
+            labEquipo8 = new TextField(jornadas.get(3).getNombreEquipoVisitante());
+            labEquipo8.setStyleName("caption1", true);
+            labEquipo8.setValue(jornadas.get(3).getGolesEquipoVisitante() + "");
+            labEquipo8.setReadOnly(true);
+            labEquipo9 = new TextField(jornadas.get(4).getNombreEquipoLocal());
+            labEquipo9.setStyleName("caption1", true);
+            labEquipo9.setValue(jornadas.get(4).getGolesEquipoLocal() + "");
+            labEquipo9.setReadOnly(true);
+            labEquipo10 = new TextField(jornadas.get(4).getNombreEquipoVisitante());
+            labEquipo10.setStyleName("caption1", true);
+            labEquipo10.setValue(jornadas.get(4).getGolesEquipoVisitante() + "");
+            labEquipo10.setReadOnly(true);
+            labEquipo11 = new TextField(jornadas.get(5).getNombreEquipoLocal());
+            labEquipo11.setStyleName("caption1", true);
+            labEquipo11.setValue(jornadas.get(5).getGolesEquipoLocal() + "");
+            labEquipo11.setReadOnly(true);
+            labEquipo12 = new TextField(jornadas.get(5).getNombreEquipoVisitante());
+            labEquipo12.setStyleName("caption1", true);
+            labEquipo12.setValue(jornadas.get(5).getGolesEquipoVisitante() + "");
+            labEquipo12.setReadOnly(true);
+            labEquipo13 = new TextField(jornadas.get(6).getNombreEquipoLocal());
+            labEquipo13.setStyleName("caption1", true);
+            labEquipo13.setValue(jornadas.get(6).getGolesEquipoLocal() + "");
+            labEquipo13.setReadOnly(true);
+            labEquipo14 = new TextField(jornadas.get(6).getNombreEquipoVisitante());
+            labEquipo14.setStyleName("caption1", true);
+            labEquipo14.setValue(jornadas.get(6).getGolesEquipoVisitante() + "");
+            labEquipo14.setReadOnly(true);
+            labEquipo15 = new TextField(jornadas.get(7).getNombreEquipoLocal());
+            labEquipo15.setStyleName("caption1", true);
+            labEquipo15.setValue(jornadas.get(7).getGolesEquipoLocal() + "");
+            labEquipo15.setReadOnly(true);
+            labEquipo16 = new TextField(jornadas.get(7).getNombreEquipoVisitante());
+            labEquipo16.setStyleName("caption1", true);
+            labEquipo16.setValue(jornadas.get(7).getGolesEquipoVisitante() + "");
+            labEquipo16.setReadOnly(true);
+            labEquipo17 = new TextField(jornadas.get(8).getNombreEquipoLocal());
+            labEquipo17.setStyleName("caption1", true);
+            labEquipo17.setValue(jornadas.get(8).getGolesEquipoLocal() + "");
+            labEquipo17.setReadOnly(true);
+            labEquipo18 = new TextField(jornadas.get(8).getNombreEquipoVisitante());
+            labEquipo18.setStyleName("caption1", true);
+            labEquipo18.setValue(jornadas.get(8).getGolesEquipoVisitante() + "");
+            labEquipo18.setReadOnly(true);
+            labEquipo19 = new TextField(jornadas.get(9).getNombreEquipoLocal());
+            labEquipo19.setStyleName("caption1", true);
+            labEquipo19.setValue(jornadas.get(9).getGolesEquipoLocal() + "");
+            labEquipo19.setReadOnly(true);
+            labEquipo20 = new TextField(jornadas.get(9).getNombreEquipoVisitante());
+            labEquipo20.setStyleName("caption1", true);
+            labEquipo20.setValue(jornadas.get(9).getGolesEquipoVisitante() + "");
+            labEquipo20.setReadOnly(true);
+
+            row22.removeComponent(1, 0);
+            row22.removeComponent(2, 0);
+            row22.removeComponent(1, 1);
+            row22.removeComponent(2, 1);
+            row22.removeComponent(1, 2);
+            row22.removeComponent(2, 2);
+            row22.removeComponent(1, 3);
+            row22.removeComponent(2, 3);
+            row22.removeComponent(1, 4);
+            row22.removeComponent(2, 4);
+            row22.removeComponent(1, 6);
+            row22.removeComponent(2, 6);
+            row22.removeComponent(1, 7);
+            row22.removeComponent(2, 7);
+            row22.removeComponent(1, 8);
+            row22.removeComponent(2, 8);
+            row22.removeComponent(1, 9);
+            row22.removeComponent(2, 9);
+            row22.removeComponent(1, 10);
+            row22.removeComponent(2, 10);
+
+            row22.addComponent(labEquipo1, 1, 0);
+            row22.addComponent(labEquipo2, 2, 0);
+            row22.addComponent(labEquipo3, 1, 1);
+            row22.addComponent(labEquipo4, 2, 1);
+            row22.addComponent(labEquipo5, 1, 2);
+            row22.addComponent(labEquipo6, 2, 2);
+            row22.addComponent(labEquipo7, 1, 3);
+            row22.addComponent(labEquipo8, 2, 3);
+            row22.addComponent(labEquipo9, 1, 4);
+            row22.addComponent(labEquipo10, 2, 4);
+            row22.addComponent(labEquipo11, 1, 6);
+            row22.addComponent(labEquipo12, 2, 6);
+            row22.addComponent(labEquipo13, 1, 7);
+            row22.addComponent(labEquipo14, 2, 7);
+            row22.addComponent(labEquipo15, 1, 8);
+            row22.addComponent(labEquipo16, 2, 8);
+            row22.addComponent(labEquipo17, 1, 9);
+            row22.addComponent(labEquipo18, 2, 9);
+            row22.addComponent(labEquipo19, 1, 10);
+            row22.addComponent(labEquipo20, 2, 10);
+
+            row2.removeComponent(3, 0);
+            row2.addComponent(row22, 3, 0);
+
+            goActualizar = new Button("Actualizar jornada");
+            goBorrar = new Button("Eliminar jornada");
+
+            row2.removeComponent(4, 0);
+            row2.removeComponent(5, 0);
+            row2.addComponent(goActualizar, 4, 0);
+            row2.addComponent(goBorrar, 5, 0);
+
+            goActualizar.addClickListener(new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    actualizarJornada();
+                }
+            });
+
+            goBorrar.addClickListener(new Button.ClickListener() {
+                @Override
+                public void buttonClick(Button.ClickEvent event) {
+                    borrarJornada();
+                }
+            });
+        
         }
-        
-        labEquipo1 = new TextField(jornadas.get(0).getNombreEquipoLocal());
-        labEquipo1.setStyleName("caption1", true);
-        labEquipo1.setValue(jornadas.get(0).getGolesEquipoLocal() + "");
-        labEquipo1.setReadOnly(true);
-        labEquipo2 = new TextField(jornadas.get(0).getNombreEquipoVisitante());
-        labEquipo2.setStyleName("caption1", true);
-        labEquipo2.setValue(jornadas.get(0).getGolesEquipoVisitante() + "");
-        labEquipo2.setReadOnly(true);
-        labEquipo3 = new TextField(jornadas.get(1).getNombreEquipoLocal());
-        labEquipo3.setStyleName("caption1", true);
-        labEquipo3.setValue(jornadas.get(1).getGolesEquipoLocal() + "");
-        labEquipo3.setReadOnly(true);
-        labEquipo4 = new TextField(jornadas.get(1).getNombreEquipoVisitante());
-        labEquipo4.setStyleName("caption1", true);
-        labEquipo4.setValue(jornadas.get(1).getGolesEquipoVisitante() + "");
-        labEquipo4.setReadOnly(true);
-        labEquipo5 = new TextField(jornadas.get(2).getNombreEquipoLocal());
-        labEquipo5.setStyleName("caption1", true);
-        labEquipo5.setValue(jornadas.get(2).getGolesEquipoLocal() + "");
-        labEquipo5.setReadOnly(true);
-        labEquipo6 = new TextField(jornadas.get(2).getNombreEquipoVisitante());
-        labEquipo6.setStyleName("caption1", true);
-        labEquipo6.setValue(jornadas.get(2).getGolesEquipoVisitante() + "");
-        labEquipo6.setReadOnly(true);
-        labEquipo7 = new TextField(jornadas.get(3).getNombreEquipoLocal());
-        labEquipo7.setStyleName("caption1", true);
-        labEquipo7.setValue(jornadas.get(3).getGolesEquipoLocal() + "");
-        labEquipo7.setReadOnly(true);
-        labEquipo8 = new TextField(jornadas.get(3).getNombreEquipoVisitante());
-        labEquipo8.setStyleName("caption1", true);
-        labEquipo8.setValue(jornadas.get(3).getGolesEquipoVisitante() + "");
-        labEquipo8.setReadOnly(true);
-        labEquipo9 = new TextField(jornadas.get(4).getNombreEquipoLocal());
-        labEquipo9.setStyleName("caption1", true);
-        labEquipo9.setValue(jornadas.get(4).getGolesEquipoLocal() + "");
-        labEquipo9.setReadOnly(true);
-        labEquipo10 = new TextField(jornadas.get(4).getNombreEquipoVisitante());
-        labEquipo10.setStyleName("caption1", true);
-        labEquipo10.setValue(jornadas.get(4).getGolesEquipoVisitante() + "");
-        labEquipo10.setReadOnly(true);
-        labEquipo11 = new TextField(jornadas.get(5).getNombreEquipoLocal());
-        labEquipo11.setStyleName("caption1", true);
-        labEquipo11.setValue(jornadas.get(5).getGolesEquipoLocal() + "");
-        labEquipo11.setReadOnly(true);
-        labEquipo12 = new TextField(jornadas.get(5).getNombreEquipoVisitante());
-        labEquipo12.setStyleName("caption1", true);
-        labEquipo12.setValue(jornadas.get(5).getGolesEquipoVisitante() + "");
-        labEquipo12.setReadOnly(true);
-        labEquipo13 = new TextField(jornadas.get(6).getNombreEquipoLocal());
-        labEquipo13.setStyleName("caption1", true);
-        labEquipo13.setValue(jornadas.get(6).getGolesEquipoLocal() + "");
-        labEquipo13.setReadOnly(true);
-        labEquipo14 = new TextField(jornadas.get(6).getNombreEquipoVisitante());
-        labEquipo14.setStyleName("caption1", true);
-        labEquipo14.setValue(jornadas.get(6).getGolesEquipoVisitante() + "");
-        labEquipo14.setReadOnly(true);
-        labEquipo15 = new TextField(jornadas.get(7).getNombreEquipoLocal());
-        labEquipo15.setStyleName("caption1", true);
-        labEquipo15.setValue(jornadas.get(7).getGolesEquipoLocal() + "");
-        labEquipo15.setReadOnly(true);
-        labEquipo16 = new TextField(jornadas.get(7).getNombreEquipoVisitante());
-        labEquipo16.setStyleName("caption1", true);
-        labEquipo16.setValue(jornadas.get(7).getGolesEquipoVisitante() + "");
-        labEquipo16.setReadOnly(true);
-        labEquipo17 = new TextField(jornadas.get(8).getNombreEquipoLocal());
-        labEquipo17.setStyleName("caption1", true);
-        labEquipo17.setValue(jornadas.get(8).getGolesEquipoLocal() + "");
-        labEquipo17.setReadOnly(true);
-        labEquipo18 = new TextField(jornadas.get(8).getNombreEquipoVisitante());
-        labEquipo18.setStyleName("caption1", true);
-        labEquipo18.setValue(jornadas.get(8).getGolesEquipoVisitante() + "");
-        labEquipo18.setReadOnly(true);
-        labEquipo19 = new TextField(jornadas.get(9).getNombreEquipoLocal());
-        labEquipo19.setStyleName("caption1", true);
-        labEquipo19.setValue(jornadas.get(9).getGolesEquipoLocal() + "");
-        labEquipo19.setReadOnly(true);
-        labEquipo20 = new TextField(jornadas.get(9).getNombreEquipoVisitante());
-        labEquipo20.setStyleName("caption1", true);
-        labEquipo20.setValue(jornadas.get(9).getGolesEquipoVisitante() + "");
-        labEquipo20.setReadOnly(true);
-        
-        row22.removeComponent(1, 0);
-        row22.removeComponent(2, 0);
-        row22.removeComponent(1, 1);
-        row22.removeComponent(2, 1);
-        row22.removeComponent(1, 2);
-        row22.removeComponent(2, 2);
-        row22.removeComponent(1, 3);
-        row22.removeComponent(2, 3);
-        row22.removeComponent(1, 4);
-        row22.removeComponent(2, 4);
-        row22.removeComponent(1, 6);
-        row22.removeComponent(2, 6);
-        row22.removeComponent(1, 7);
-        row22.removeComponent(2, 7);
-        row22.removeComponent(1, 8);
-        row22.removeComponent(2, 8);
-        row22.removeComponent(1, 9);
-        row22.removeComponent(2, 9);
-        row22.removeComponent(1, 10);
-        row22.removeComponent(2, 10);
-        
-        row22.addComponent(labEquipo1, 1, 0);
-        row22.addComponent(labEquipo2, 2, 0);
-        row22.addComponent(labEquipo3, 1, 1);
-        row22.addComponent(labEquipo4, 2, 1);
-        row22.addComponent(labEquipo5, 1, 2);
-        row22.addComponent(labEquipo6, 2, 2);
-        row22.addComponent(labEquipo7, 1, 3);
-        row22.addComponent(labEquipo8, 2, 3);
-        row22.addComponent(labEquipo9, 1, 4);
-        row22.addComponent(labEquipo10, 2, 4);
-        row22.addComponent(labEquipo11, 1, 6);
-        row22.addComponent(labEquipo12, 2, 6);
-        row22.addComponent(labEquipo13, 1, 7);
-        row22.addComponent(labEquipo14, 2, 7);
-        row22.addComponent(labEquipo15, 1, 8);
-        row22.addComponent(labEquipo16, 2, 8);
-        row22.addComponent(labEquipo17, 1, 9);
-        row22.addComponent(labEquipo18, 2, 9);
-        row22.addComponent(labEquipo19, 1, 10);
-        row22.addComponent(labEquipo20, 2, 10);
-                
-        row2.removeComponent(3, 0);
-        row2.addComponent(row22, 3, 0);
-                
-        goActualizar = new Button("Actualizar jornada");
-        goBorrar = new Button("Eliminar jornada");
-                
-        row2.removeComponent(4, 0);
-        row2.removeComponent(5, 0);
-        row2.addComponent(goActualizar, 4, 0);
-        row2.addComponent(goBorrar, 5, 0);
-        
-        goActualizar.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                actualizarJornada();
-            }
-        });
-                
-        goBorrar.addClickListener(new Button.ClickListener() {
-            @Override
-            public void buttonClick(Button.ClickEvent event) {
-                borrarJornada();
-            }
-        });
         
     }
     
@@ -432,42 +454,58 @@ public class BuscarJornada extends UI{
         final List<Jornada> jornadaAntes = new ArrayList<Jornada>();   
         jornadaAntes.addAll(jornadas);
         
-         ConfirmDialog.show(this, "Eliminar jornada", "¿Está seguro que desea eliminar la jornada seleccionada?", "Sí", "No", new ConfirmDialog.Listener() {
-             @Override
-             public void onClose(final ConfirmDialog cd) {
-                 cd.getOkButton().addClickListener(new Button.ClickListener() {
-                     @Override
-                     public void buttonClick(Button.ClickEvent event) {
-                         
-                         try {
-                             jornadasDao.borrarJornadas(jornadas);
-                         } catch (final Exception e){
-                             e.printStackTrace();
-                         }
-                         
-                         try {
-                             clasificacionDao.calculaClasificacion3(jornadaAntes, jornadas);
-                         } catch (final Exception e){
-                             e.printStackTrace();
-                         }
-                         
-                         cd.close();
-                         
-                     }
-                 });
+        ConfirmDialog d = ConfirmDialog.show(getUI(), "Eliminar jornada", "¿Está seguro que desea eliminar la jornada seleccionada?", "Sí", "No", new ConfirmDialog.Listener() {
+            @Override
+            public void onClose(final ConfirmDialog cd) {
                  
-                 cd.getCancelButton().addClickListener(new Button.ClickListener() {
-                     @Override
-                     public void buttonClick(Button.ClickEvent event) {
-                         cd.close();
-                     }
-                 });
-             }
-         });
+                if(cd.isConfirmed()){         
+                    try {
+                        jornadasDao.borrarJornadas(jornadaAntes);
+                    } catch (final Exception e){
+                        e.printStackTrace();
+                    }
+                    
+                    try {
+                        clasificacionDao.calculaClasificacion3(jornadaAntes);
+                    } catch (final Exception e){
+                        e.printStackTrace();
+                    }
+                    
+                    cd.close();
+                         
+                }
+                 
+                if(cd.isCanceled()){
+                    cd.close();
+                }
+            }
+        });
+        d.setStyleName(Reindeer.WINDOW_BLACK);
+        d.setContentMode(ConfirmDialog.ContentMode.HTML);
+        d.setHeight("16em");
+        d.getCancelButton().setStyleName(Reindeer.BUTTON_LINK);
     }
 
     @WebServlet(urlPatterns = "/BuscarJornada/*", name = "BuscarJornadaServlet", asyncSupported = true)
     @VaadinServletConfiguration(ui = BuscarJornada.class, productionMode = false)
     public static class BuscarJornadaServlet extends VaadinServlet {
     }
+}
+
+@Theme("mytheme")
+@Widgetset("tad.proyecto.madrigalgutierrezpedroantonio.MyAppWidgetset")
+abstract class confirmDialogBorrar extends UI{
+    
+    private GridLayout content;
+    private VerticalLayout row1;
+    private VerticalLayout row2;
+    private HorizontalLayout row21;
+    private Button aceptar;
+    private Button cancelar;
+    
+    @Override
+    protected void init(VaadinRequest vaadinRequest) {
+        
+    }
+    
 }

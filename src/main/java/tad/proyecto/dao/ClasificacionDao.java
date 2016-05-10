@@ -21,4 +21,6 @@ public interface ClasificacionDao {
     
     public void calculaClasificacion2 (final List<Jornada> jornadaAntes, final List<Jornada> jornadas) throws Exception;
     
+    public void calculaClasificacion3 (final List<Jornada> jornadaAntes) throws Exception;
+    
 }

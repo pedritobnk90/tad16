@@ -115,7 +115,8 @@ public class Inicio extends UI{
         row2.addComponent(clasificacionTabla, 4, 0);
         
         goAnadirJornada = new Button("Añadir jornada");
-        goBuscarJornada = new Button("Buscar --> Actualizar/Borrar jornada");
+        goBuscarJornada = new Button("Act./Borrar jornada");
+        goBuscarJornada.setDescription("Buscar jornada --> Actualizar o Borrar");
         row21.addComponent(goAnadirJornada, 0, 2);
         row21.addComponent(goBuscarJornada, 1, 2);
         

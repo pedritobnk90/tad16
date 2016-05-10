@@ -24,4 +24,6 @@ public interface JornadasDao {
     
     public int getSiguienteJornada() throws Exception;
     
+    public void borrarJornadas(final List<Jornada> jornadas) throws Exception;
+    
 }

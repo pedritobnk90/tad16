@@ -161,7 +161,6 @@ public class ClasificacionDaoImpl implements ClasificacionDao {
             e.printStackTrace();
             Notification.show("Ocurrió un error mientras actualizaba las posiciones de la clasificación", Notification.Type.ERROR_MESSAGE);
         }
-        
     }
      
     /*
@@ -316,6 +315,104 @@ public class ClasificacionDaoImpl implements ClasificacionDao {
                 }
             }
         }
+        return clasificacionActual;
+    }
+    
+    public void calculaClasificacion3 (final List<Jornada> jornadaAntes) throws Exception {
+        
+        List<Clasificacion> clasificacion =  calculosPrevios3(jornadaAntes);
+        
+        try {
+            
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            
+            for(final Clasificacion clasif : clasificacion){
+                s.executeUpdate("UPDATE Clasificacion SET golesFavor = " + clasif.getGolesFavor() + ", golesContra = " 
+                    + clasif.getGolesContra() + ", difGoles = " + clasif.getDifGoles() + ", puntos = " 
+                    + clasif.getPuntos() + " WHERE idEquipo = " + clasif.getIdEquipo());
+            }
+        } catch(final Exception e) {
+            e.printStackTrace();
+            Notification.show("Ocurrió un error mientras actualizaba los goles y puntos de la clasificación", Notification.Type.ERROR_MESSAGE);
+        }
+        
+        clasificacion.clear();
+        clasificacion = getClasificacionActual();
+        
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            
+            int posicion = 1;
+            for(final Clasificacion clasif : clasificacion){
+                s.executeUpdate("UPDATE Clasificacion SET posicion = " + posicion 
+                    + " WHERE idEquipo = " + clasif.getIdEquipo());
+                posicion++;
+            }
+        } catch (final Exception e) {
+            e.printStackTrace();
+            Notification.show("Ocurrió un error mientras actualizaba las posiciones de la clasificación", Notification.Type.ERROR_MESSAGE);
+        }
+        
+    }
+    
+    /*
+     * Devuelve la clasificación nueva después de calcular los nuevos goles y puntos.
+     * Se diferencia con calculosPrevios1 y con calculosPrevios2 en que aquí ya se había calculado una clasificación anteriormente para una jornada.
+     * Aquí calcula una clasificación al eliminar los goles y puntos de una jornada.
+     */ 
+    private List<Clasificacion> calculosPrevios3(final List<Jornada> jornadaAntes) {
+     
+        List<Clasificacion> clasificacionActual = new ArrayList<Clasificacion>();
+        try {
+            clasificacionActual = getClasificacionActual();
+        } catch(final Exception e) {
+            e.printStackTrace();
+            Notification.show("Ocurrió un error mientras se obtenía la clasificación actual.", Notification.Type.ERROR_MESSAGE);
+        }
+            
+            for(final Jornada jornadaAnterior : jornadaAntes){
+            
+                for(final Clasificacion clasificacion : clasificacionActual){
+                    
+                    if(clasificacion.getIdEquipo() == jornadaAnterior.getIdEquipoLocal()){
+                        
+                        clasificacion.setGolesFavor(clasificacion.getGolesFavor() 
+                            - jornadaAnterior.getGolesEquipoLocal());
+                        
+                        clasificacion.setGolesContra(clasificacion.getGolesContra() 
+                            - jornadaAnterior.getGolesEquipoVisitante());
+                                
+                        clasificacion.setDifGoles(clasificacion.getDifGoles() - jornadaAnterior.getGolesEquipoLocal() 
+                            + jornadaAnterior.getGolesEquipoVisitante());
+                        
+                        if(jornadaAnterior.getGolesEquipoLocal() > jornadaAnterior.getGolesEquipoVisitante()){
+                            clasificacion.setPuntos(clasificacion.getPuntos() - 3);
+                        }else if(jornadaAnterior.getGolesEquipoLocal() == jornadaAnterior.getGolesEquipoVisitante()){
+                            clasificacion.setPuntos(clasificacion.getPuntos() - 1);
+                        }
+                    }
+                        
+                    if(clasificacion.getIdEquipo() == jornadaAnterior.getIdEquipoVisitante()){
+                        
+                        clasificacion.setGolesFavor(clasificacion.getGolesFavor() 
+                            - jornadaAnterior.getGolesEquipoVisitante());
+                        
+                        clasificacion.setGolesContra(clasificacion.getGolesContra() 
+                            - jornadaAnterior.getGolesEquipoLocal());
+                                
+                        clasificacion.setDifGoles(clasificacion.getDifGoles() - jornadaAnterior.getGolesEquipoVisitante()
+                            + jornadaAnterior.getGolesEquipoLocal());
+                        
+                        if(jornadaAnterior.getGolesEquipoLocal() < jornadaAnterior.getGolesEquipoVisitante()){
+                            clasificacion.setPuntos(clasificacion.getPuntos() - 3);
+                        }else if(jornadaAnterior.getGolesEquipoLocal() == jornadaAnterior.getGolesEquipoVisitante()){
+                            clasificacion.setPuntos(clasificacion.getPuntos() - 1);
+                        }
+                    }
+                }
+            }
         
         return clasificacionActual;
         
