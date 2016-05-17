@@ -542,4 +542,159 @@ public class ClasificacionDaoImpl implements ClasificacionDao {
         return clasificacionActual;
     }
     
+    /**
+     * Este método se utiliza para obtener la clasificación con los nombres de los equipos actual ordenada por puntos.
+     * @return List<Clasificacion> Devuelve la lista con la clasificación actual.
+     * @exception Exception
+     * @see Exception
+     */
+    public List<Clasificacion> getClasificacionActualEquipos() throws Exception {
+        
+        List<Clasificacion> clasificacion = new ArrayList<Clasificacion>();
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet res = s.executeQuery ("SELECT c.golesFavor, c.golesContra, c.difGoles, e.nombre "
+                    + "FROM clasificacion c LEFT JOIN equipo e ON (c.idEquipo = e.id) WHERE c.idLiga = 1");
+            while(res.next()) {
+                clasificacion.add(new Clasificacion(res.getInt(1), res.getInt(2), res.getInt(3), res.getString(4)));
+            }
+        } catch(final Exception e) {
+            e.printStackTrace();
+        }
+        return clasificacion;
+    }
+    
+    /**
+     * Este método se utiliza para obtener el menor número de goles en contra.
+     * @return int Devuelve el número mínimo de goles en contra.
+     * @exception Exception
+     * @see Exception
+     */
+    public int getMinGolesContra() throws Exception {
+        
+        int minGolesContra = 0;
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet res = s.executeQuery ("SELECT MIN(golesContra) FROM clasificacion WHERE idLiga = 1");
+            while(res.next()) {
+                minGolesContra = res.getInt(1);
+            }
+        } catch(final Exception e) {
+            e.printStackTrace();
+        }
+        return minGolesContra;
+    }
+    
+    /**
+     * Este método se utiliza para obtener el mayor número de goles en contra.
+     * @return int Devuelve el número máximo de goles en contra.
+     * @exception Exception
+     * @see Exception
+     */
+    public int getMaxGolesContra() throws Exception {
+        
+        int maxGolesContra = 0;
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet res = s.executeQuery ("SELECT MAX(golesContra) FROM clasificacion WHERE idLiga = 1");
+            while(res.next()) {
+                maxGolesContra = res.getInt(1);
+            }
+        } catch(final Exception e) {
+            e.printStackTrace();
+        }
+        return maxGolesContra;
+    }
+    
+    /**
+     * Este método se utiliza para obtener el menor número de goles a favor.
+     * @return int Devuelve el número mínimo de goles en contra.
+     * @exception Exception
+     * @see Exception
+     */
+    public int getMinGolesFavor() throws Exception {
+        
+        int minGolesFavor = 0;
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet res = s.executeQuery ("SELECT MIN(golesFavor) FROM clasificacion WHERE idLiga = 1");
+            while(res.next()) {
+                minGolesFavor = res.getInt(1);
+            }
+        } catch(final Exception e) {
+            e.printStackTrace();
+        }
+        return minGolesFavor;
+    }
+    
+    /**
+     * Este método se utiliza para obtener el mayor número de goles a favor.
+     * @return int Devuelve el número máximo de goles a favor.
+     * @exception Exception
+     * @see Exception
+     */
+    public int getMaxGolesFavor() throws Exception {
+        
+        int maxGolesFavor = 0;
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet res = s.executeQuery ("SELECT MAX(golesFavor) FROM clasificacion WHERE idLiga = 1");
+            while(res.next()) {
+                maxGolesFavor = res.getInt(1);
+            }
+        } catch(final Exception e) {
+            e.printStackTrace();
+        }
+        return maxGolesFavor;
+    }
+    
+    /**
+     * Este método se utiliza para obtener el menor número de diferencia de goles.
+     * @return int Devuelve el número mínimo de diferencia de goles.
+     * @exception Exception
+     * @see Exception
+     */
+    public int getMinDifGoles() throws Exception {
+        
+        int minDifGoles = 0;
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet res = s.executeQuery ("SELECT MIN(difGoles) FROM clasificacion WHERE idLiga = 1");
+            while(res.next()) {
+                minDifGoles = res.getInt(1);
+            }
+        } catch(final Exception e) {
+            e.printStackTrace();
+        }
+        return minDifGoles;
+    }
+    
+    /**
+     * Este método se utiliza para obtener el mayor número de diferencia de goles.
+     * @return int Devuelve el número máximo de diferencia de goles.
+     * @exception Exception
+     * @see Exception
+     */
+    public int getMaxDifGoles() throws Exception {
+        
+        int maxDifGoles = 0;
+        try {
+            Connection conexion = DriverManager.getConnection("jdbc:mysql://localhost:3306/tad16", "root", "");
+            Statement s = conexion.createStatement(); 
+            ResultSet res = s.executeQuery ("SELECT MAX(difGoles) FROM clasificacion WHERE idLiga = 1");
+            while(res.next()) {
+                maxDifGoles = res.getInt(1);
+            }
+        } catch(final Exception e) {
+            e.printStackTrace();
+        }
+        return maxDifGoles;
+    }
+    
 }

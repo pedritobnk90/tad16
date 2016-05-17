@@ -42,6 +42,7 @@ public class Inicio extends UI{
     private Table clasificacionTabla;
     private Button goAnadirJornada;
     private Button goBuscarJornada;
+    private Button goGraficos;
     
     public Inicio(){
         
@@ -126,8 +127,10 @@ public class Inicio extends UI{
         goAnadirJornada = new Button("Añadir jornada");
         goBuscarJornada = new Button("Act./Borrar jornada");
         goBuscarJornada.setDescription("Buscar jornada --> Actualizar o Borrar");
+        goGraficos = new Button("Gráfico");
         row21.addComponent(goAnadirJornada, 0, 2);
         row21.addComponent(goBuscarJornada, 1, 2);
+        row21.addComponent(goGraficos, 0, 3);
         
         row2.setColumnExpandRatio(0, 1);
         row2.setColumnExpandRatio(1, 1);
@@ -158,6 +161,12 @@ public class Inicio extends UI{
             @Override
             public void buttonClick(Button.ClickEvent event) {
                 getPage().setLocation("/BuscarJornada");
+            }
+        });
+        goGraficos.addClickListener(new Button.ClickListener() {
+            @Override
+            public void buttonClick(Button.ClickEvent event) {
+                getPage().setLocation("/Grafico");
             }
         });
     }

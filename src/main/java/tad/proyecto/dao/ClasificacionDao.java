@@ -24,4 +24,18 @@ public interface ClasificacionDao {
     
     public void calculaClasificacion3 (final List<Jornada> jornadaAntes) throws Exception;
     
+    public List<Clasificacion> getClasificacionActualEquipos() throws Exception;
+    
+    public int getMinGolesContra() throws Exception;
+    
+    public int getMaxGolesContra() throws Exception;
+    
+    public int getMinGolesFavor() throws Exception;
+    
+    public int getMaxGolesFavor() throws Exception;
+    
+    public int getMinDifGoles() throws Exception;
+    
+    public int getMaxDifGoles() throws Exception;
+    
 }

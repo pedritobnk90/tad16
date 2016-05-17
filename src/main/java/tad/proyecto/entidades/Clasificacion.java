@@ -23,6 +23,9 @@ public class Clasificacion implements Serializable {
     private int golesFavor;
     private int golesContra;
     private int difGoles;
+    
+    //Variables auxiliares para queries de los gráficos.
+    private String nombreEquipo;
 
     public Clasificacion() {
     }
@@ -40,6 +43,13 @@ public class Clasificacion implements Serializable {
         this.golesFavor = golesFavor;
         this.golesContra = golesContra;
         this.difGoles = difGoles;
+    }
+    
+    public Clasificacion(int golesFavor, int golesContra, int difGoles, String nombreEquipo) {
+        this.golesFavor = golesFavor;
+        this.golesContra = golesContra;
+        this.difGoles = difGoles;
+        this.nombreEquipo = nombreEquipo;
     }
 
     public Integer getId() {
@@ -104,6 +114,14 @@ public class Clasificacion implements Serializable {
 
     public void setDifGoles(int difGoles) {
         this.difGoles = difGoles;
+    }
+    
+    public String getNombreEquipo() {
+        return nombreEquipo;
+    }
+
+    public void setNombreEquipo(String nombreEquipo) {
+        this.nombreEquipo = nombreEquipo;
     }
     
     public int compareTo(final Clasificacion clasificacion) {
